@@ -38,7 +38,7 @@ function App() {
     <div className="app">
       <div className="dog-container">
         <img
-          src="https://cdn2.thedogapi.com/images/gwZ3amqat.jpg"
+          src="https://cdn2.thedogapi.com/images/G5f0AcBsF.jpg"
           alt="dog"
           className="dog-image"
         />
