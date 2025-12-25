@@ -3,6 +3,7 @@ import './App.css'
 
 function App() {
   const [time, setTime] = useState(new Date())
+  const [dogImageUrl, setDogImageUrl] = useState('https://cdn2.thedogapi.com/images/fHVBn5VTk.jpg')
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -13,12 +14,22 @@ function App() {
   }, [])
 
   useEffect(() => {
-    const AUTO_RELOAD_INTERVAL_MS = 10 * 60 * 1000 // 10 minutes
-    const reloadTimer = setInterval(() => {
-      window.location.reload()
-    }, AUTO_RELOAD_INTERVAL_MS)
+    const fetchDogImageUrl = async () => {
+      try {
+        const response = await fetch('/dog-clock/metadata.json?t=' + Date.now()) // Cache busting
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
+        const data = await response.json()
+        if (data.imageUrl) setDogImageUrl(data.imageUrl)
+      } catch (error) {
+        console.error('Failed to fetch dog image metadata: ', error)
+      }
+    }
 
-    return () => clearInterval(reloadTimer)
+    fetchDogImageUrl() // Initial fetch
+    const CHECK_INTERVAL_MS = 10 * 60 * 1000 // 10 minutes
+    const fetchTimer = setInterval(fetchDogImageUrl, CHECK_INTERVAL_MS)
+
+    return () => clearInterval(fetchTimer)
   }, [])
 
   const formattedTime = time.toLocaleTimeString('en-US', {
@@ -38,7 +49,7 @@ function App() {
     <div className="app">
       <div className="dog-container">
         <img
-          src="https://cdn2.thedogapi.com/images/B1ruWl94Q_1280.jpg"
+          src={dogImageUrl}
           alt="dog"
           className="dog-image"
         />
