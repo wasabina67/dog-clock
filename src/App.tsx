@@ -17,9 +17,7 @@ function App() {
     const fetchDogImageUrl = async () => {
       try {
         const response = await fetch('/dog-clock/metadata.json?t=' + Date.now()) // Cache busting
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
         const data = await response.json()
         if (data.imageUrl) setDogImageUrl(data.imageUrl)
       } catch (error) {
