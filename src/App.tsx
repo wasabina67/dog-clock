@@ -3,7 +3,7 @@ import './App.css'
 
 function App() {
   const [time, setTime] = useState(new Date())
-  const [dogImageUrl, setDogImageUrl] = useState('https://cdn2.thedogapi.com/images/fHVBn5VTk.jpg')
+  const [dogImageUrl, setDogImageUrl] = useState('')
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -48,11 +48,13 @@ function App() {
   return (
     <div className="app">
       <div className="dog-container">
-        <img
-          src={dogImageUrl}
-          alt="dog"
-          className="dog-image"
-        />
+        {dogImageUrl && (
+          <img
+            src={dogImageUrl}
+            alt="dog"
+            className="dog-image"
+          />
+        )}
         <div className="clock">
           <div className="date">{formattedDate}</div>
           <div className="time">{formattedTime}</div>
